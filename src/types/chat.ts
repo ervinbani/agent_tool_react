@@ -11,3 +11,15 @@ export interface Conversation {
   messages: Message[];
   createdAt: Date;
 }
+
+export interface ChatRequest {
+  query: string;
+  bot_id: string;
+  index_name: string;
+}
+
+export interface ChatResponse {
+  succeeded: boolean;
+  response: string;
+  bot_id: string;
+}

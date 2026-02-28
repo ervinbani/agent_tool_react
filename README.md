@@ -51,6 +51,9 @@ VITE_API_BASE_URL=http://localhost:8000/api
 
 # JWT Configuration
 VITE_JWT_TOKEN_KEY=chatbot_jwt_token
+
+# Chatbot Configuration
+VITE_BOT_INDEX_NAME=test1
 ```
 
 ### Backend API
@@ -102,7 +105,19 @@ Content-Type: application/json
 
 **Response (200):**
 ```json
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+{
+  "message": "Login Successful",
+  "data": {
+    "user_id": "062c770c-bbea-4d25-9674-1fd62389674e",
+    "email": "user@example.com",
+    "email": "user@example.com",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user_id": "062c770c-bbea-4d25-9674-1fd62389674e",
+    "user_name": "username"
+  },
+  "message": "Login Successful",
+  "succeeded": true
+}
 ```
 
 **Error (422):**
@@ -117,6 +132,28 @@ Content-Type: application/json
       "ctx": {}
     }
   ]
+}
+```
+
+#### Chat with Bot
+```http
+POST /api/chatbot-agent
+Content-Type: application/json
+Authorization: Bearer {token}
+
+{
+  "query": "Tell me about something",
+  "bot_id": "23232",
+  "index_name": "test1"
+}
+```
+
+**Response (200):**
+```json
+{
+  "succeeded": true,
+  "response": "This is the bot response to your query...",
+  "bot_id": "23232"
 }
 ```
 
@@ -201,22 +238,14 @@ Main colors are defined in CSS files:
 
 ### Chat API Integration
 
-To integrate a real chat API, modify `src/pages/ChatPage.tsx`:
+The chat is now integrated with the real API. The application:
 
-```typescript
-// Replace simulation with real API call
-const response = await api.post('/chat', {
-  message: userMessage.content,
-  conversation_id: activeConversation.id
-});
+1. Sends user messages to `POST /api/chatbot-agent` with Bearer token
+2. Uses `index_name` from environment variable (default: "test1")
+3. Generates a random `bot_id` for each conversation
+4. Displays the bot's response in the chat interface
 
-const aiMessage: Message = {
-  id: crypto.randomUUID(),
-  role: 'assistant',
-  content: response.data.message,
-  timestamp: new Date(),
-};
-```
+The chat service automatically includes the JWT token in the Authorization header.
 
 ## 📦 Main Dependencies
 
@@ -256,6 +285,7 @@ Make sure to configure environment variables in your hosting provider:
 
 - `VITE_API_BASE_URL` - Your backend API URL
 - `VITE_JWT_TOKEN_KEY` - Key to save JWT
+- `VITE_BOT_INDEX_NAME` - Bot index name (default: test1)
 
 ## 🐛 Troubleshooting
 

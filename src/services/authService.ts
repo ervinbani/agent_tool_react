@@ -4,7 +4,7 @@ import type { LoginRequest, SignupRequest } from '../types/auth';
 export const authService = {
   async login(data: LoginRequest): Promise<string> {
     const response = await api.post('/login', data);
-    const token = response.data;
+    const token = response.data.data.token;
     localStorage.setItem(JWT_TOKEN_KEY, token);
     return token;
   },
