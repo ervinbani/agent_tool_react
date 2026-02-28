@@ -24,7 +24,7 @@ export function ChatPage() {
   const createNewConversation = () => {
     const newConv: Conversation = {
       id: crypto.randomUUID(),
-      title: 'Nuova conversazione',
+      title: 'New conversation',
       messages: [],
       createdAt: new Date(),
     };
@@ -67,12 +67,13 @@ export function ChatPage() {
     setInput('');
     setIsLoading(true);
 
-    // Simula risposta AI (sostituire con chiamata API reale)
+    // Simulate AI response (replace with real API call)
     setTimeout(() => {
       const aiMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Questa è una risposta simulata. Integra qui la tua API di chat per risposte reali.\n\nHai scritto: "${userMessage.content}"`,
+        content: `This is a simulated response. Integrate your chat API here for real responses.\n\nYou wrote: "${userMessage.content}"`,
+
         timestamp: new Date(),
       };
 
@@ -109,7 +110,7 @@ export function ChatPage() {
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
           <button className="new-chat-btn" onClick={createNewConversation}>
-            <span>+</span> Nuova chat
+            <span>+</span> New chat
           </button>
         </div>
 
@@ -182,16 +183,16 @@ export function ChatPage() {
         ) : (
           <div className="welcome-screen">
             <h1>🤖 Chatbot AI</h1>
-            <p>Come posso aiutarti oggi?</p>
+            <p>How can I help you today?</p>
             <div className="suggestions">
-              <button onClick={() => setInput('Spiegami come funziona React')}>
-                Spiegami come funziona React
+              <button onClick={() => setInput('Explain how React works')}>
+                Explain how React works
               </button>
-              <button onClick={() => setInput('Scrivi una funzione JavaScript')}>
-                Scrivi una funzione JavaScript
+              <button onClick={() => setInput('Write a JavaScript function')}>
+                Write a JavaScript function
               </button>
-              <button onClick={() => setInput('Quali sono le best practices per TypeScript?')}>
-                Best practices TypeScript
+              <button onClick={() => setInput('What are the best practices for TypeScript?')}>
+                Best practices for TypeScript
               </button>
             </div>
           </div>
@@ -205,7 +206,7 @@ export function ChatPage() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Scrivi un messaggio..."
+              placeholder="Write a message..."
               rows={1}
               disabled={isLoading}
             />
@@ -214,7 +215,7 @@ export function ChatPage() {
             </button>
           </form>
           <p className="disclaimer">
-            Il chatbot può commettere errori. Verifica le informazioni importanti.
+            The chatbot can make mistakes. Verify important information.
           </p>
         </div>
       </main>

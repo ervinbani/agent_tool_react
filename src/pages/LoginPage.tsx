@@ -21,7 +21,7 @@ export function LoginPage() {
       navigate('/');
     } catch (err: unknown) {
       const error = err as { response?: { data?: { detail?: string } } };
-      setError(error.response?.data?.detail || 'Errore durante il login');
+      setError(error.response?.data?.detail || 'Login error');
     } finally {
       setIsLoading(false);
     }
@@ -32,7 +32,7 @@ export function LoginPage() {
       <div className="auth-card">
         <div className="auth-header">
           <h1>Chatbot AI</h1>
-          <p>Accedi al tuo account</p>
+          <p>Sign in to your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
@@ -45,7 +45,7 @@ export function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="nome@esempio.com"
+              placeholder="name@example.com"
               required
             />
           </div>
@@ -63,12 +63,12 @@ export function LoginPage() {
           </div>
 
           <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? 'Accesso in corso...' : 'Accedi'}
+            {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>Non hai un account? <Link to="/register">Registrati</Link></p>
+          <p>Don't have an account? <Link to="/register">Sign up</Link></p>
         </div>
       </div>
     </div>

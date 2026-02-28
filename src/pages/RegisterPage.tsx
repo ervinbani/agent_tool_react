@@ -18,7 +18,7 @@ export function RegisterPage() {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Le password non coincidono');
+      setError('Passwords do not match');
       return;
     }
 
@@ -26,13 +26,13 @@ export function RegisterPage() {
 
     try {
       await signup({ user_name: userName, email, password });
-      navigate('/login', { state: { message: 'Registrazione completata! Effettua il login.' } });
+      navigate('/login', { state: { message: 'Registration complete! Please log in.' } });
     } catch (err: unknown) {
       const error = err as { response?: { data?: { detail?: string | { msg: string }[] } } };
       if (Array.isArray(error.response?.data?.detail)) {
         setError(error.response.data.detail.map((d) => d.msg).join(', '));
       } else {
-        setError(error.response?.data?.detail as string || 'Errore durante la registrazione');
+        setError(error.response?.data?.detail as string || 'Registration error');
       }
     } finally {
       setIsLoading(false);
@@ -44,20 +44,20 @@ export function RegisterPage() {
       <div className="auth-card">
         <div className="auth-header">
           <h1>Chatbot AI</h1>
-          <p>Crea il tuo account</p>
+          <p>Create your account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="error-message">{error}</div>}
           
           <div className="form-group">
-            <label htmlFor="userName">Nome utente</label>
+            <label htmlFor="userName">Username</label>
             <input
               id="userName"
               type="text"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              placeholder="Il tuo nome"
+              placeholder="Your name"
               required
             />
           </div>
@@ -69,7 +69,7 @@ export function RegisterPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="nome@esempio.com"
+              placeholder="name@example.com"
               required
             />
           </div>
@@ -88,7 +88,7 @@ export function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Conferma Password</label>
+            <label htmlFor="confirmPassword">Confirm Password</label>
             <input
               id="confirmPassword"
               type="password"
@@ -100,12 +100,12 @@ export function RegisterPage() {
           </div>
 
           <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? 'Registrazione...' : 'Registrati'}
+            {isLoading ? 'Signing up...' : 'Sign up'}
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>Hai già un account? <Link to="/login">Accedi</Link></p>
+          <p>Already have an account? <Link to="/login">Sign in</Link></p>
         </div>
       </div>
     </div>
