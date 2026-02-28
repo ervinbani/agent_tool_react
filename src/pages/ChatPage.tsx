@@ -1,20 +1,21 @@
-import { useState, useRef, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import type { Message, Conversation } from '../types/chat';
-import './ChatPage.css';
+import { useState, useRef, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import type { Message, Conversation } from "../types/chat";
+import "./ChatPage.css";
 
 export function ChatPage() {
   const { logout } = useAuth();
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
-  const [input, setInput] = useState('');
+  const [activeConversation, setActiveConversation] =
+    useState<Conversation | null>(null);
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export function ChatPage() {
   const createNewConversation = () => {
     const newConv: Conversation = {
       id: crypto.randomUUID(),
-      title: 'New conversation',
+      title: "New conversation",
       messages: [],
       createdAt: new Date(),
     };
@@ -40,7 +41,7 @@ export function ChatPage() {
     if (!conv) {
       conv = {
         id: crypto.randomUUID(),
-        title: input.slice(0, 30) + (input.length > 30 ? '...' : ''),
+        title: input.slice(0, 30) + (input.length > 30 ? "..." : ""),
         messages: [],
         createdAt: new Date(),
       };
@@ -49,7 +50,7 @@ export function ChatPage() {
 
     const userMessage: Message = {
       id: crypto.randomUUID(),
-      role: 'user',
+      role: "user",
       content: input,
       timestamp: new Date(),
     };
@@ -57,21 +58,24 @@ export function ChatPage() {
     const updatedConv = {
       ...conv,
       messages: [...conv.messages, userMessage],
-      title: conv.messages.length === 0 ? input.slice(0, 30) + (input.length > 30 ? '...' : '') : conv.title,
+      title:
+        conv.messages.length === 0
+          ? input.slice(0, 30) + (input.length > 30 ? "..." : "")
+          : conv.title,
     };
 
     setActiveConversation(updatedConv);
     setConversations((prev) =>
-      prev.map((c) => (c.id === updatedConv.id ? updatedConv : c))
+      prev.map((c) => (c.id === updatedConv.id ? updatedConv : c)),
     );
-    setInput('');
+    setInput("");
     setIsLoading(true);
 
     // Simulate AI response (replace with real API call)
     setTimeout(() => {
       const aiMessage: Message = {
         id: crypto.randomUUID(),
-        role: 'assistant',
+        role: "assistant",
         content: `This is a simulated response. Integrate your chat API here for real responses.\n\nYou wrote: "${userMessage.content}"`,
 
         timestamp: new Date(),
@@ -84,14 +88,14 @@ export function ChatPage() {
 
       setActiveConversation(finalConv);
       setConversations((prev) =>
-        prev.map((c) => (c.id === finalConv.id ? finalConv : c))
+        prev.map((c) => (c.id === finalConv.id ? finalConv : c)),
       );
       setIsLoading(false);
     }, 1000);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
     }
@@ -107,7 +111,7 @@ export function ChatPage() {
   return (
     <div className="chat-layout">
       {/* Sidebar */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
+      <aside className={`sidebar ${sidebarOpen ? "open" : "closed"}`}>
         <div className="sidebar-header">
           <button className="new-chat-btn" onClick={createNewConversation}>
             <span>+</span> New chat
@@ -118,7 +122,7 @@ export function ChatPage() {
           {conversations.map((conv) => (
             <div
               key={conv.id}
-              className={`conversation-item ${activeConversation?.id === conv.id ? 'active' : ''}`}
+              className={`conversation-item ${activeConversation?.id === conv.id ? "active" : ""}`}
               onClick={() => setActiveConversation(conv)}
             >
               <span className="conv-title">{conv.title}</span>
@@ -147,7 +151,7 @@ export function ChatPage() {
         className="sidebar-toggle"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
-        {sidebarOpen ? '◀' : '▶'}
+        {sidebarOpen ? "◀" : "▶"}
       </button>
 
       {/* Main chat area */}
@@ -158,7 +162,7 @@ export function ChatPage() {
               {activeConversation.messages.map((msg) => (
                 <div key={msg.id} className={`message ${msg.role}`}>
                   <div className="message-avatar">
-                    {msg.role === 'user' ? '👤' : '🤖'}
+                    {msg.role === "user" ? "👤" : "🤖"}
                   </div>
                   <div className="message-content">
                     <p>{msg.content}</p>
@@ -185,13 +189,17 @@ export function ChatPage() {
             <h1>🤖 Chatbot AI</h1>
             <p>How can I help you today?</p>
             <div className="suggestions">
-              <button onClick={() => setInput('Explain how React works')}>
+              <button onClick={() => setInput("Explain how React works")}>
                 Explain how React works
               </button>
-              <button onClick={() => setInput('Write a JavaScript function')}>
+              <button onClick={() => setInput("Write a JavaScript function")}>
                 Write a JavaScript function
               </button>
-              <button onClick={() => setInput('What are the best practices for TypeScript?')}>
+              <button
+                onClick={() =>
+                  setInput("What are the best practices for TypeScript?")
+                }
+              >
                 Best practices for TypeScript
               </button>
             </div>

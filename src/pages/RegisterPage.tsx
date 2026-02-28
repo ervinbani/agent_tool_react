@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import './AuthPages.css';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import "./AuthPages.css";
 
 export function RegisterPage() {
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
@@ -26,13 +26,19 @@ export function RegisterPage() {
 
     try {
       await signup({ user_name: userName, email, password });
-      navigate('/login', { state: { message: 'Registration complete! Please log in.' } });
+      navigate("/login", {
+        state: { message: "Registration complete! Please log in." },
+      });
     } catch (err: unknown) {
-      const error = err as { response?: { data?: { detail?: string | { msg: string }[] } } };
+      const error = err as {
+        response?: { data?: { detail?: string | { msg: string }[] } };
+      };
       if (Array.isArray(error.response?.data?.detail)) {
-        setError(error.response.data.detail.map((d) => d.msg).join(', '));
+        setError(error.response.data.detail.map((d) => d.msg).join(", "));
       } else {
-        setError(error.response?.data?.detail as string || 'Registration error');
+        setError(
+          (error.response?.data?.detail as string) || "Registration error",
+        );
       }
     } finally {
       setIsLoading(false);
@@ -49,7 +55,7 @@ export function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="error-message">{error}</div>}
-          
+
           <div className="form-group">
             <label htmlFor="userName">Username</label>
             <input
@@ -100,12 +106,14 @@ export function RegisterPage() {
           </div>
 
           <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? 'Signing up...' : 'Sign up'}
+            {isLoading ? "Signing up..." : "Sign up"}
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>Already have an account? <Link to="/login">Sign in</Link></p>
+          <p>
+            Already have an account? <Link to="/login">Sign in</Link>
+          </p>
         </div>
       </div>
     </div>

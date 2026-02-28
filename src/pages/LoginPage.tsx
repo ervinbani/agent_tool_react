@@ -1,27 +1,27 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import './AuthPages.css';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import "./AuthPages.css";
 
 export function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsLoading(true);
 
     try {
       await login({ email, password });
-      navigate('/');
+      navigate("/");
     } catch (err: unknown) {
       const error = err as { response?: { data?: { detail?: string } } };
-      setError(error.response?.data?.detail || 'Login error');
+      setError(error.response?.data?.detail || "Login error");
     } finally {
       setIsLoading(false);
     }
@@ -37,7 +37,7 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit} className="auth-form">
           {error && <div className="error-message">{error}</div>}
-          
+
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -63,12 +63,14 @@ export function LoginPage() {
           </div>
 
           <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign in'}
+            {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </form>
 
         <div className="auth-footer">
-          <p>Don't have an account? <Link to="/register">Sign up</Link></p>
+          <p>
+            Don't have an account? <Link to="/register">Sign up</Link>
+          </p>
         </div>
       </div>
     </div>
