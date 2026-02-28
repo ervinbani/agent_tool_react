@@ -1,49 +1,49 @@
 # 🤖 Chatbot AI - React TypeScript
 
-Un'applicazione chatbot moderna con autenticazione JWT, costruita con React, TypeScript e Vite. Interfaccia utente ispirata a ChatGPT.
+A modern chatbot application with JWT authentication, built with React, TypeScript, and Vite. User interface inspired by ChatGPT.
 
-## ✨ Caratteristiche
+## ✨ Features
 
-- 🔐 **Autenticazione completa** - Login e registrazione con JWT
-- 💬 **Interfaccia chat moderna** - Design ispirato a ChatGPT
-- 🔒 **Route protette** - Accesso condizionato basato su token JWT
-- 📱 **Responsive** - Ottimizzato per desktop e mobile
-- 🎨 **UI/UX curata** - Animazioni fluide e design dark mode
-- 💾 **Gestione conversazioni** - Sidebar con storico chat
-- ⚡ **Performance** - Build ottimizzata con Vite
+- 🔐 **Complete Authentication** - Login and registration with JWT
+- 💬 **Modern Chat Interface** - ChatGPT-inspired design
+- 🔒 **Protected Routes** - Conditional access based on JWT token
+- 📱 **Responsive** - Optimized for desktop and mobile
+- 🎨 **Polished UI/UX** - Smooth animations and dark mode design
+- 💾 **Conversation Management** - Sidebar with chat history
+- ⚡ **Performance** - Optimized build with Vite
 
 ## 🚀 Quick Start
 
-### Prerequisiti
+### Prerequisites
 
-- Node.js 20.9+ o superiore
-- npm o yarn
+- Node.js 20.9+ or higher
+- npm or yarn
 
-### Installazione
+### Installation
 
 ```bash
-# Clona il repository
+# Clone the repository
 git clone <repository-url>
 cd agent_tool_react
 
-# Installa le dipendenze
+# Install dependencies
 npm install
 
-# Configura le variabili d'ambiente
+# Configure environment variables
 cp .env.example .env
-# Modifica .env con i tuoi valori
+# Edit .env with your values
 
-# Avvia il server di sviluppo
+# Start development server
 npm run dev
 ```
 
-L'applicazione sarà disponibile su `http://localhost:5173`
+The application will be available at `http://localhost:5173`
 
-## 🔧 Configurazione
+## 🔧 Configuration
 
-### File .env
+### .env File
 
-Crea un file `.env` nella root del progetto:
+Create a `.env` file in the project root:
 
 ```env
 # API Configuration
@@ -53,11 +53,11 @@ VITE_API_BASE_URL=http://localhost:8000/api
 VITE_JWT_TOKEN_KEY=chatbot_jwt_token
 ```
 
-### API Backend
+### Backend API
 
-L'applicazione si aspetta le seguenti API:
+The application expects the following API endpoints:
 
-#### Registrazione
+#### Registration
 ```http
 POST /api/signup
 Content-Type: application/json
@@ -69,12 +69,12 @@ Content-Type: application/json
 }
 ```
 
-**Risposta (200):**
+**Response (200):**
 ```json
 "string"
 ```
 
-**Errore (422):**
+**Error (422):**
 ```json
 {
   "detail": [
@@ -100,12 +100,12 @@ Content-Type: application/json
 }
 ```
 
-**Risposta (200):**
+**Response (200):**
 ```json
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
-**Errore (422):**
+**Error (422):**
 ```json
 {
   "detail": [
@@ -120,91 +120,91 @@ Content-Type: application/json
 }
 ```
 
-## 📁 Struttura del Progetto
+## 📁 Project Structure
 
 ```
 agent_tool_react/
 ├── src/
 │   ├── components/
-│   │   └── ProtectedRoute.tsx    # Componente per route protette
+│   │   └── ProtectedRoute.tsx    # Protected route component
 │   ├── contexts/
-│   │   └── AuthContext.tsx       # Context per autenticazione
+│   │   └── AuthContext.tsx       # Authentication context
 │   ├── pages/
-│   │   ├── LoginPage.tsx         # Pagina di login
-│   │   ├── RegisterPage.tsx      # Pagina di registrazione
-│   │   ├── ChatPage.tsx          # Interfaccia chatbot
-│   │   ├── AuthPages.css         # Stili auth
-│   │   └── ChatPage.css          # Stili chat
+│   │   ├── LoginPage.tsx         # Login page
+│   │   ├── RegisterPage.tsx      # Registration page
+│   │   ├── ChatPage.tsx          # Chatbot interface
+│   │   ├── AuthPages.css         # Auth styles
+│   │   └── ChatPage.css          # Chat styles
 │   ├── services/
-│   │   ├── api.ts                # Configurazione Axios
-│   │   └── authService.ts        # Servizi autenticazione
+│   │   ├── api.ts                # Axios configuration
+│   │   └── authService.ts        # Authentication services
 │   ├── types/
-│   │   ├── auth.ts               # Tipi TypeScript auth
-│   │   └── chat.ts               # Tipi TypeScript chat
-│   ├── App.tsx                   # Componente principale
+│   │   ├── auth.ts               # Auth TypeScript types
+│   │   └── chat.ts               # Chat TypeScript types
+│   ├── App.tsx                   # Main component
 │   ├── main.tsx                  # Entry point
-│   └── index.css                 # Stili globali
-├── .env                          # Variabili d'ambiente (non committare)
-├── .env.example                  # Template variabili d'ambiente
+│   └── index.css                 # Global styles
+├── .env                          # Environment variables (don't commit)
+├── .env.example                  # Environment variables template
 ├── package.json
 ├── tsconfig.json
 └── vite.config.ts
 ```
 
-## 🛠️ Scripts Disponibili
+## 🛠️ Available Scripts
 
 ```bash
-# Sviluppo
+# Development
 npm run dev
 
-# Build per produzione
+# Production build
 npm run build
 
-# Preview build di produzione
+# Preview production build
 npm run preview
 
-# Lint del codice
+# Lint code
 npm run lint
 ```
 
-## 🔐 Autenticazione
+## 🔐 Authentication
 
-### Flusso di Autenticazione
+### Authentication Flow
 
-1. L'utente accede alla pagina di login/registrazione
-2. Dopo il login, il JWT viene salvato in `localStorage`
-3. Ogni richiesta API include automaticamente il token nell'header `Authorization`
-4. Le route protette verificano la validità del token
-5. Se il token è scaduto o invalido, l'utente viene reindirizzato al login
+1. User accesses login/registration page
+2. After login, JWT is saved in `localStorage`
+3. Every API request automatically includes the token in `Authorization` header
+4. Protected routes verify token validity
+5. If token is expired or invalid, user is redirected to login
 
-### Gestione Token
+### Token Management
 
-Il token JWT viene:
-- Salvato in `localStorage` dopo il login
-- Aggiunto automaticamente alle richieste API tramite interceptor Axios
-- Verificato ad ogni accesso a route protette
-- Rimosso al logout o se scaduto
+The JWT token is:
+- Saved in `localStorage` after login
+- Automatically added to API requests via Axios interceptor
+- Verified on every protected route access
+- Removed on logout or if expired
 
-## 🎨 Personalizzazione
+## 🎨 Customization
 
-### Colori
+### Colors
 
-I colori principali sono definiti nei file CSS:
+Main colors are defined in CSS files:
 
 ```css
-/* Colori principali */
+/* Main colors */
 --primary: #6366f1;
 --background: #1a1a2e;
 --surface: #16213e;
 --text: #ffffff;
 ```
 
-### Integrazione API Chat
+### Chat API Integration
 
-Per integrare una vera API di chat, modifica `src/pages/ChatPage.tsx`:
+To integrate a real chat API, modify `src/pages/ChatPage.tsx`:
 
 ```typescript
-// Sostituisci la simulazione con una chiamata API reale
+// Replace simulation with real API call
 const response = await api.post('/chat', {
   message: userMessage.content,
   conversation_id: activeConversation.id
@@ -218,57 +218,57 @@ const aiMessage: Message = {
 };
 ```
 
-## 📦 Dipendenze Principali
+## 📦 Main Dependencies
 
-- **React 19** - Libreria UI
+- **React 19** - UI library
 - **TypeScript** - Type safety
 - **Vite 5** - Build tool
 - **React Router DOM 7** - Routing
 - **Axios** - HTTP client
 
-## 🚢 Deploy
+## 🚢 Deployment
 
-### Build per Produzione
+### Production Build
 
 ```bash
 npm run build
 ```
 
-I file ottimizzati saranno generati nella cartella `dist/`.
+Optimized files will be generated in the `dist/` folder.
 
-### Deploy su Vercel
+### Deploy to Vercel
 
 ```bash
 npm install -g vercel
 vercel
 ```
 
-### Deploy su Netlify
+### Deploy to Netlify
 
 ```bash
 npm install -g netlify-cli
 netlify deploy --prod
 ```
 
-### Variabili d'Ambiente in Produzione
+### Production Environment Variables
 
-Assicurati di configurare le variabili d'ambiente nel tuo provider di hosting:
+Make sure to configure environment variables in your hosting provider:
 
-- `VITE_API_BASE_URL` - URL della tua API backend
-- `VITE_JWT_TOKEN_KEY` - Chiave per salvare il JWT
+- `VITE_API_BASE_URL` - Your backend API URL
+- `VITE_JWT_TOKEN_KEY` - Key to save JWT
 
 ## 🐛 Troubleshooting
 
-### Errore: "crypto.hash is not a function"
+### Error: "crypto.hash is not a function"
 
-Aggiorna Node.js alla versione 20.19+ o superiore.
+Update Node.js to version 20.19+ or higher.
 
-### Errore CORS
+### CORS Error
 
-Configura il tuo backend per accettare richieste dal frontend:
+Configure your backend to accept requests from the frontend:
 
 ```python
-# FastAPI esempio
+# FastAPI example
 from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
@@ -280,18 +280,18 @@ app.add_middleware(
 )
 ```
 
-### Token non valido
+### Invalid Token
 
-Verifica che il JWT sia nel formato corretto e non scaduto. Il token deve essere un JWT valido con campo `exp` (expiration).
+Verify that the JWT is in the correct format and not expired. The token must be a valid JWT with an `exp` (expiration) field.
 
-## 📝 Licenza
+## 📝 License
 
 MIT
 
-## 🤝 Contributi
+## 🤝 Contributing
 
-I contributi sono benvenuti! Sentiti libero di aprire issue o pull request.
+Contributions are welcome! Feel free to open issues or pull requests.
 
 ---
 
-Sviluppato con ❤️ usando React + TypeScript + Vite
+Built with ❤️ using React + TypeScript + Vite
