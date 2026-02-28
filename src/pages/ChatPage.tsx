@@ -1,7 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { chatService } from '../services/chatService';
 import type { Message, Conversation } from '../types/chat';
 import './ChatPage.css';
+
+const BOT_INDEX_NAME = import.meta.env.VITE_BOT_INDEX_NAME || 'test1';
 
 export function ChatPage() {
   const { logout } = useAuth();
@@ -67,12 +70,21 @@ export function ChatPage() {
     setInput('');
     setIsLoading(true);
 
-    // Simula risposta AI (sostituire con chiamata API reale)
-    setTimeout(() => {
+    try {
+      // Genera un bot_id random
+      const botId = Math.floor(Math.random() * 100000).toString();
+      
+      // Chiamata API reale
+      const response = await chatService.sendMessage(
+        userMessage.content,
+        botId,
+        BOT_INDEX_NAME
+      );
+
       const aiMessage: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `Questa è una risposta simulata. Integra qui la tua API di chat per risposte reali.\n\nHai scritto: "${userMessage.content}"`,
+        content: response.response,
         timestamp: new Date(),
       };
 
@@ -85,8 +97,28 @@ export function ChatPage() {
       setConversations((prev) =>
         prev.map((c) => (c.id === finalConv.id ? finalConv : c))
       );
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      const errorMessage: Message = {
+        id: crypto.randomUUID(),
+        role: 'assistant',
+        content: 'Sorry, there was an error processing your request. Please try again.',
+        timestamp: new Date(),
+      };
+
+      const finalConv = {
+        ...updatedConv,
+        messages: [...updatedConv.messages, errorMessage],
+      };
+
+      setActiveConversation(finalConv);
+      setConversations((prev) =>
+        prev.map((c) => (c.id === finalConv.id ? finalConv : c))
+      );
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
