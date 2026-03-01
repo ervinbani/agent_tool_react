@@ -4,8 +4,6 @@ import { chatService } from "../services/chatService";
 import type { Message, Conversation } from "../types/chat";
 import "./ChatPage.css";
 
-const BOT_INDEX_NAME = import.meta.env.VITE_BOT_INDEX_NAME || "test1";
-
 export function ChatPage() {
   const { logout } = useAuth();
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -14,6 +12,9 @@ export function ChatPage() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [indexes, setIndexes] = useState<string[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<string>("");
+  const [showSettings, setShowSettings] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -24,6 +25,17 @@ export function ChatPage() {
   useEffect(() => {
     scrollToBottom();
   }, [activeConversation?.messages]);
+
+  useEffect(() => {
+    chatService.getAllIndexes().then((data) => {
+      setIndexes(data);
+      if (data.length > 0) {
+        setSelectedIndex(data[0]);
+      }
+    }).catch((err) => {
+      console.error("Failed to load indexes:", err);
+    });
+  }, []);
 
   const createNewConversation = () => {
     const newConv: Conversation = {
@@ -82,7 +94,7 @@ export function ChatPage() {
       const response = await chatService.sendMessage(
         userMessage.content,
         botId,
-        BOT_INDEX_NAME,
+        selectedIndex,
       );
 
       const aiMessage: Message = {
@@ -172,11 +184,72 @@ export function ChatPage() {
         </div>
 
         <div className="sidebar-footer">
+          <button
+            className="settings-btn"
+            onClick={() => setShowSettings(true)}
+          >
+            ⚙️ Settings
+          </button>
           <button className="logout-btn" onClick={logout}>
             Logout
           </button>
         </div>
       </aside>
+
+      {/* Settings modal */}
+      {showSettings && (
+        <div
+          className="settings-overlay"
+          onClick={() => setShowSettings(false)}
+        >
+          <div
+            className="settings-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="settings-modal-header">
+              <h3>⚙️ Settings</h3>
+              <button
+                className="settings-close-btn"
+                onClick={() => setShowSettings(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="settings-modal-body">
+              <label className="settings-label" htmlFor="index-select">
+                Knowledge Base (Index)
+              </label>
+              {indexes.length === 0 ? (
+                <p className="settings-loading">Loading indexes...</p>
+              ) : (
+                <select
+                  id="index-select"
+                  className="index-select"
+                  value={selectedIndex}
+                  onChange={(e) => setSelectedIndex(e.target.value)}
+                >
+                  {indexes.map((idx) => (
+                    <option key={idx} value={idx}>
+                      {idx}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <p className="settings-hint">
+                All new messages will use the selected index.
+              </p>
+            </div>
+            <div className="settings-modal-footer">
+              <button
+                className="settings-save-btn"
+                onClick={() => setShowSettings(false)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Toggle sidebar button */}
       <button
@@ -240,6 +313,19 @@ export function ChatPage() {
 
         {/* Input area */}
         <div className="input-container">
+          {selectedIndex && (
+            <div className="index-badge-row">
+              <span className="index-badge">
+                🗂️ {selectedIndex}
+              </span>
+              <button
+                className="index-change-btn"
+                onClick={() => setShowSettings(true)}
+              >
+                change
+              </button>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="input-form">
             <textarea
               ref={textareaRef}
