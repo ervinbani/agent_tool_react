@@ -27,14 +27,17 @@ export function ChatPage() {
   }, [activeConversation?.messages]);
 
   useEffect(() => {
-    chatService.getAllIndexes().then((data) => {
-      setIndexes(data);
-      if (data.length > 0) {
-        setSelectedIndex(data[0]);
-      }
-    }).catch((err) => {
-      console.error("Failed to load indexes:", err);
-    });
+    chatService
+      .getAllIndexes()
+      .then((data) => {
+        setIndexes(data);
+        if (data.length > 0) {
+          setSelectedIndex(data[0]);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load indexes:", err);
+      });
   }, []);
 
   const createNewConversation = () => {
@@ -202,10 +205,7 @@ export function ChatPage() {
           className="settings-overlay"
           onClick={() => setShowSettings(false)}
         >
-          <div
-            className="settings-modal"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
             <div className="settings-modal-header">
               <h3>⚙️ Settings</h3>
               <button
@@ -315,9 +315,7 @@ export function ChatPage() {
         <div className="input-container">
           {selectedIndex && (
             <div className="index-badge-row">
-              <span className="index-badge">
-                🗂️ {selectedIndex}
-              </span>
+              <span className="index-badge">🗂️ {selectedIndex}</span>
               <button
                 className="index-change-btn"
                 onClick={() => setShowSettings(true)}
